@@ -38,6 +38,13 @@
       </el-table-column>
       <el-table-column prop="pageCreateTime" label="创建时间" width="180">
       </el-table-column>
+      <el-table-column label="操作" width="80">
+        <template slot-scope="scope">
+          <!--          <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
+          <el-button @click="handleEdit(scope.row.pageId)" type="text" size="small">编辑</el-button>
+          <el-button @click="handleDel(scope.row.pageId)" type="text" size="small">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <el-pagination
@@ -81,10 +88,28 @@
                     this.list = res.queryResult.list;
                     this.total = res.queryResult.total
                 })
+            },
+            handleEdit: function (pageId) {
+                this.$router.push({
+                    path: '/cms/page/edit/' + pageId,
+                    // query: {pageId}
+                })
+            },
+            handleDel: function (pageId) {
+                this.$confirm('确认删除页面吗', '提示', {}).then(() => {
+                    cmsApi.page_del(pageId).then((res)=>{
+                        if (res.success) {
+                            this.$message.success('删除成功');
+                            this.query();
+                        } else {
+                            this.$message.error('删除失败')
+                        }
+                    })
+                });
             }
         },
         //页面渲染前执行，在钩子方法执行查询前，先把page和siteId设置上，这样就能回显并查询
-        created(){
+        created() {
             //路由地址取的参数时字符串
             this.params.page = Number.parseInt(this.$route.query.page) || 1;
             this.params.siteId = this.$route.query.siteId
