@@ -106,6 +106,8 @@
                             cmsApi.page_add(this.pageForm).then((res) => {
                                 if (res.success) {
                                     this.$message.success('提交成功')
+                                } else if (res.message) {
+                                    this.$message.error(res.message);
                                 } else {
                                     this.$message.error("提交失败")
                                 }
