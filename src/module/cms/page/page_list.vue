@@ -26,21 +26,21 @@
       >
       <el-table-column type="index" width="60">
       </el-table-column>
-      <el-table-column prop="pageName" label="页面名称" width="120">
+      <el-table-column prop="pageName" label="页面名称" width="180">
       </el-table-column>
       <el-table-column prop="pageAliase" label="别名" width="120">
       </el-table-column>
-      <el-table-column prop="pageType" label="页面类型" width="150">
+      <el-table-column prop="pageType" label="页面类型" width="120">
       </el-table-column>
       <el-table-column prop="pageWebPath" label="访问路径" width="250">
       </el-table-column>
-      <el-table-column prop="pagePhysicalPath" label="物理路径" width="250">
+      <el-table-column prop="pagePhysicalPath" label="物理路径" width="350">
       </el-table-column>
-      <el-table-column prop="pageCreateTime" label="创建时间" width="180">
-      </el-table-column>
-      <el-table-column label="操作" width="80">
+      <!--      <el-table-column prop="pageCreateTime" label="创建时间" width="180">-->
+      <!--      </el-table-column>-->
+      <el-table-column label="操作" width="150">
         <template slot-scope="scope">
-          <!--          <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
+          <el-button @click="preview(scope.row.pageId)" type="text" size="small">预览</el-button>
           <el-button @click="handleEdit(scope.row.pageId)" type="text" size="small">编辑</el-button>
           <el-button @click="handleDel(scope.row.pageId)" type="text" size="small">删除</el-button>
         </template>
@@ -97,7 +97,7 @@
             },
             handleDel: function (pageId) {
                 this.$confirm('确认删除页面吗', '提示', {}).then(() => {
-                    cmsApi.page_del(pageId).then((res)=>{
+                    cmsApi.page_del(pageId).then((res) => {
                         if (res.success) {
                             this.$message.success('删除成功');
                             this.query();
@@ -106,6 +106,9 @@
                         }
                     })
                 });
+            },
+            preview: function (pageId) {
+                window.open("http://www.xuecheng.com/cms/preview/preview/" + pageId);
             }
         },
         //页面渲染前执行，在钩子方法执行查询前，先把page和siteId设置上，这样就能回显并查询
